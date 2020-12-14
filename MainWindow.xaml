@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QuickDice"
         mc:Ignorable="d"
-        Title="QuickDice" ResizeMode="NoResize" Name="QuickDiceWindow" MinHeight="300" MaxHeight="350" Width="270" MinWidth="270" MaxWidth="340">
+        Title="QuickDice" ResizeMode="NoResize" Name="QuickDiceWindow" MinHeight="300" MaxHeight="350" MinWidth="305" MaxWidth="340">
     <Grid>
         <DockPanel>
             <StackPanel>
@@ -18,6 +18,7 @@
                     </StackPanel>
                 </DockPanel>
                 <StackPanel Margin="10 0 10 0">
+                    <CheckBox Margin="0 0 0 2" Name="AddBonusIndividuallyCheckBox">Add Bonus to Each Roll</CheckBox>
                     <CheckBox Name="SuccessesCheckBox" IsChecked="False">Successes</CheckBox>
                     <StackPanel Name="SuccessPanel" Margin="5 2 0 2" Visibility="Collapsed">
                         <StackPanel Name="SuccessType" Margin="10 0 10 10">
@@ -37,7 +38,6 @@
                             <CheckBox Margin="0 0 0 2" Name="RangeCountsForTwoCheckBox">Range Counts for Two</CheckBox>
                             <TextBox Margin="10 2 0 2" Name="TwoCountRangeText"></TextBox>
                         </StackPanel>
-                        <CheckBox Margin="0 0 0 2" Name="AddBonusIndividuallyCheckBox">Add Bonus to Each Roll</CheckBox>
                         <TextBox Name="SuccessParameters" Width="110" Height="20" HorizontalAlignment="Left">Success Threshold</TextBox>
                     </StackPanel>
                 </StackPanel>

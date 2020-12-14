@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
+using System.Windows;
 using Z.Expressions;
 
 namespace QuickDice.Dice
 {
     public class DiceGroupProvider
     {
-        protected readonly string Regex = @"\d+[dD]\d+|\d+|[+-/*^]";
+        protected readonly string Regex = @"\d+[dD]\d+|[dD]\d+|\d+|[+-/*^]";
         protected readonly char[] D = new[] {'d', 'D'};
         protected readonly char Comma = ',';
 
@@ -41,28 +42,44 @@ namespace QuickDice.Dice
             int countsTwoRange = 0;
             if (countsTwo)
             {
-                countsTwoRange = int.Parse(args.First(arg => arg.StartsWith(COUNTS_TWO, StringComparison.OrdinalIgnoreCase))
-                    .Substring(COUNTS_TWO.Length)
-                    .Trim());
+                if (int.TryParse(
+                    args.First(arg => arg.StartsWith(COUNTS_TWO, StringComparison.OrdinalIgnoreCase))
+                        .Substring(COUNTS_TWO.Length)
+                        .Trim(),
+                    out countsTwoRange) == false)
+                {
+                    MessageBox.Show("Please input a valid range for the 'Counts For Two' parameter.");
+                    return finalResults;
+                }
             }
             bool subtracts = args.Any(arg => arg.StartsWith(SUBTRACTS, StringComparison.OrdinalIgnoreCase));
             int subtractsRange = 0;
             if (subtracts)
             {
-                subtractsRange = int.Parse(args
-                    .First(arg => arg.StartsWith(SUBTRACTS, StringComparison.OrdinalIgnoreCase))
-                    .Substring(SUBTRACTS.Length)
-                    .Trim());
+                if (int.TryParse(
+                    args.First(arg => arg.StartsWith(SUBTRACTS, StringComparison.OrdinalIgnoreCase))
+                        .Substring(SUBTRACTS.Length)
+                        .Trim(),
+                    out subtractsRange) == false)
+                {
+                    MessageBox.Show("Please input a valid range for the 'Subtracts' parameter.");
+                    return finalResults;
+                }
             }
             
             bool useExplosive = args.Any(arg => arg.StartsWith(EXPLOSIVE, StringComparison.OrdinalIgnoreCase));
             int explosiveRange = 0;
             if (useExplosive)
             {
-                explosiveRange = int.Parse(args
-                    .First(arg => arg.StartsWith(EXPLOSIVE, StringComparison.OrdinalIgnoreCase))
-                    .Substring(EXPLOSIVE.Length)
-                    .Trim());
+                if (int.TryParse(
+                    args.First(arg => arg.StartsWith(EXPLOSIVE, StringComparison.OrdinalIgnoreCase))
+                        .Substring(EXPLOSIVE.Length)
+                        .Trim(),
+                    out explosiveRange) == false)
+                {
+                    MessageBox.Show("Please input a valid range for the 'Explodes' parameter.");
+                    return finalResults;
+                }
             }
 
             bool addToAll = args.Any(arg => arg.StartsWith(ADD_TO_ALL, StringComparison.OrdinalIgnoreCase));
@@ -91,14 +108,17 @@ namespace QuickDice.Dice
             {
                 int successes = 0;
                 string splitCopy = split;
+                List<int> firstGroup = new List<int>();
                 List<int> results = new List<int>();
                 List<string> resultStrings = new List<string>();
                 MatchCollection group = System.Text.RegularExpressions.Regex.Matches(splitCopy, this.Regex);
-                foreach (Match match in group)
+                for(int i = 0; i < group.Count; i++)
                 {
-                    string temp = match.Value;
+                    string temp = group[i].Value;
                     int number = 1;
                     int faces = 2;
+                    
+                    List<int> localResults = new List<int>();
                     
                     if (this.IsDice(temp))
                     {
@@ -111,34 +131,59 @@ namespace QuickDice.Dice
                         
                         List<string> bits = new List<string>();
 
-                        for (int i = 0; i < number; i++)
+                        for (int j = 0; j < number; j++)
                         {
                             IEnumerable<int> moreResults = new List<int>();
                             int moreSuccesses = 0;
                             (moreResults, moreSuccesses) = this.Roll(faces, successThreshold, tupleArgs);
-                            results.AddRange(moreResults);
-                            resultStrings.AddRange(moreResults.Select(result => result.ToString()));
+                            localResults.AddRange(moreResults);
+                            if (!addToAll)
+                            {
+                                resultStrings.AddRange(moreResults.Select(result => result.ToString()));
+                            }
                             if (!total)
                             {
                                 successes += moreSuccesses;
                             }
 
-                            IEnumerator<int> enumerator = moreResults.GetEnumerator();
-                            enumerator.MoveNext();
-                            for (int j = 0; j < moreResults.Count(); j++)
+                            int additionIndex = addToAll && firstGroup.Count > 0 ? firstGroup.Count : 1;
+                            for (int add = 0; add < additionIndex; add++)
                             {
-                                bits.Add(enumerator.Current.ToString());
-                                bits.Add("+");
-
+                                IEnumerator<int> enumerator = moreResults.GetEnumerator();
                                 enumerator.MoveNext();
+                                for (int k = 0; k < moreResults.Count(); k++)
+                                {
+                                    bits.Add(enumerator.Current.ToString());
+                                    if (i != 0)
+                                    {
+                                        bits.Add(group[i - 1].Value);
+                                    }
+                                    else
+                                    {
+                                        bits.Add("+");
+                                    }
+
+                                    enumerator.MoveNext();
+                                }
                             }
+                            
                         }
-                        
+
                         bits.RemoveAt(bits.Count - 1);
 
                         int index = splitCopy.IndexOf(temp);
                         splitCopy = splitCopy.Remove(index, temp.Length)
                             .Insert(index, string.Join(" ", bits));
+
+                        if (addToAll && i > 0)
+                        {
+                            for (int l = 0; l < firstGroup.Count; l++)
+                            {
+                                firstGroup[l] += localResults.Sum();
+                            }
+                        }
+                        
+                        results.AddRange(localResults);
                     }
                     else
                     {
@@ -146,8 +191,38 @@ namespace QuickDice.Dice
                         if (int.TryParse(temp, out result))
                         {
                             results.Add(result);
+                            
+                            if (addToAll && i > 0)
+                            {
+                                for (int l = 0; l < firstGroup.Count; l++)
+                                {
+                                    firstGroup[l] = Eval.Execute<int>(firstGroup[l] + group[i - 1].Value + result);
+                                }
+                            }
+
+                            for (int l = 0; l < firstGroup.Count - 1; l++)
+                            {
+                                if (i == 0)
+                                {
+                                    splitCopy += "+" + result;
+                                }
+                                else
+                                {
+                                    splitCopy += group[i - 1].Value + result;
+                                }
+                            }
                         }
                     }
+
+                    if (addToAll && i == 0)
+                    {
+                        firstGroup.AddRange(results);
+                    }
+                }
+
+                if (addToAll)
+                {
+                    resultStrings.AddRange(firstGroup.Select(result => result.ToString()));
                 }
 
                 if (successThreshold != int.MinValue)
@@ -155,9 +230,21 @@ namespace QuickDice.Dice
                     if (total)
                     {
                         successes = 0;
-                        if (results.Sum(result => result) >= successThreshold)
+                        if (results.Sum() >= successThreshold)
                         {
                             successes = 1;
+                        }
+                    }
+
+                    if (addToAll)
+                    {
+                        successes = 0;
+                        foreach (int result in firstGroup)
+                        {
+                            if (result >= successThreshold)
+                            {
+                                successes += 1;
+                            }
                         }
                     }
 

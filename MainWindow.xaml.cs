@@ -85,11 +85,11 @@ namespace QuickDice
                 {
                     options.Add(DiceGroupProvider.SUBTRACTS + this.RangeSubtractsText.Text);
                 }
+            }
 
-                if (this.AddBonusIndividuallyCheckBox.IsChecked.Value)
-                {
-                    options.Add(DiceGroupProvider.ADD_TO_ALL);
-                }
+            if (this.AddBonusIndividuallyCheckBox.IsChecked.Value)
+            {
+                options.Add(DiceGroupProvider.ADD_TO_ALL);
             }
 
             IEnumerable<string> results = this.DiceGroupProvider.Parse(this.DiceBox.Text, options.ToArray());
