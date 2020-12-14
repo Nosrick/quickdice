@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Windows;
-using Z.Expressions;
+using CodingSeb.ExpressionEvaluator;
 
 namespace QuickDice.Dice
 {
@@ -23,10 +23,12 @@ namespace QuickDice.Dice
         public const string ADD_TO_ALL = "addtoall";
 
         protected RNGCryptoServiceProvider Roller;
+        protected ExpressionEvaluator Eval;
 
         public DiceGroupProvider()
         {
             this.Roller = new RNGCryptoServiceProvider();
+            this.Eval = new ExpressionEvaluator();
         }
 
         public IEnumerable<string> Parse(string diceString, string[] args)
@@ -196,7 +198,7 @@ namespace QuickDice.Dice
                             {
                                 for (int l = 0; l < firstGroup.Count; l++)
                                 {
-                                    firstGroup[l] = Eval.Execute<int>(firstGroup[l] + group[i - 1].Value + result);
+                                    firstGroup[l] = Eval.Evaluate<int>(firstGroup[l] + group[i - 1].Value + result);
                                 }
                             }
 
@@ -251,7 +253,7 @@ namespace QuickDice.Dice
                     resultStrings.Add("Successes: " + successes);
                 }
                 
-                resultStrings.Add("Total: " + Eval.Execute<int>(splitCopy).ToString());
+                resultStrings.Add("Total: " + Eval.Evaluate<int>(splitCopy).ToString());
                 finalResults.AddRange(resultStrings);
             }
 
