@@ -1,0 +1,49 @@
+﻿<Window x:Class="QuickDice.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QuickDice"
+        mc:Ignorable="d"
+        Title="QuickDice" ResizeMode="NoResize" Name="QuickDiceWindow" MinHeight="300" MaxHeight="350" Width="270" MinWidth="270" MaxWidth="340">
+    <Grid>
+        <DockPanel>
+            <StackPanel>
+                <DockPanel Margin="10 10 10 2">
+                    <StackPanel>
+                        <TextBlock Margin="0 0 0 2">Dice to roll:</TextBlock>
+                        <DockPanel>
+                            <TextBox Name="DiceBox" Width="100" Height="20" HorizontalAlignment="Left">Dice go here</TextBox>
+                        </DockPanel>
+                    </StackPanel>
+                </DockPanel>
+                <StackPanel Margin="10 0 10 0">
+                    <CheckBox Name="SuccessesCheckBox" IsChecked="False">Successes</CheckBox>
+                    <StackPanel Name="SuccessPanel" Margin="5 2 0 2" Visibility="Collapsed">
+                        <StackPanel Name="SuccessType" Margin="10 0 10 10">
+                            <RadioButton Name="IndividualRadio" GroupName="DiceGrouping" Margin="0 2 0 0" IsChecked="True">Individual</RadioButton>
+                            <RadioButton Name="TotalRadio" GroupName="DiceGrouping" Margin="0 2 0 0">Total</RadioButton>
+                        </StackPanel>
+                        <StackPanel>
+                            <CheckBox Margin="0 0 0 2" Name="ExplosiveCheckBox">Explosive Range</CheckBox>
+                            <TextBox Margin="10 2 0 2" Name="ExplosiveRangeText"></TextBox>
+                        </StackPanel>
+                        <StackPanel>
+                            <CheckBox Margin="0 0 0 2" Name="RangeSubtractCheckBox">Range Subtracts</CheckBox>
+                            <TextBox Margin="10 2 0 2" Name="RangeSubtractsText"></TextBox>
+                        </StackPanel>
+                        
+                        <StackPanel>
+                            <CheckBox Margin="0 0 0 2" Name="RangeCountsForTwoCheckBox">Range Counts for Two</CheckBox>
+                            <TextBox Margin="10 2 0 2" Name="TwoCountRangeText"></TextBox>
+                        </StackPanel>
+                        <CheckBox Margin="0 0 0 2" Name="AddBonusIndividuallyCheckBox">Add Bonus to Each Roll</CheckBox>
+                        <TextBox Name="SuccessParameters" Width="110" Height="20" HorizontalAlignment="Left">Success Threshold</TextBox>
+                    </StackPanel>
+                </StackPanel>
+                <Button Name="RollButton" Margin="10 10 0 0" Width="50" Height="24" HorizontalAlignment="Left">Roll!</Button>
+            </StackPanel>
+            <ListBox Name="ResultsList" Margin="0 10 10 10" Width="120" HorizontalAlignment="Right"></ListBox>
+        </DockPanel>
+    </Grid>
+</Window>
