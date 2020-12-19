@@ -40,12 +40,10 @@ namespace QuickDice
             if (SuccessesCheckBox.IsChecked.Value)
             {
                 SuccessPanel.Visibility = Visibility.Visible;
-                QuickDiceWindow.Width = QuickDiceWindow.MaxWidth;
             }
             else
             {
                 SuccessPanel.Visibility = Visibility.Collapsed;
-                QuickDiceWindow.Width = QuickDiceWindow.MinWidth;
             }
         }
 
