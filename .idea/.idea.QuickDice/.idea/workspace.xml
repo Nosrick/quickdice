@@ -9,8 +9,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8892e85b-7201-44c9-be63-aa0691ecc672" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Dice/DiceGroupProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Dice/DiceGroupProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QuickDice.sln.DotSettings.user" beforeDir="false" afterPath="$PROJECT_DIR$/QuickDice.sln.DotSettings.user" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/QuickDice.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/QuickDice.csproj" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +89,7 @@
       <workItem from="1607992846674" duration="22000" />
       <workItem from="1608399922707" duration="877000" />
       <workItem from="1608417424420" duration="3432000" />
-      <workItem from="1608751241736" duration="5297000" />
+      <workItem from="1608751241736" duration="6007000" />
     </task>
     <task id="LOCAL-00001" summary="First commit. Mostly working.&#10;Need to add the &quot;add bonus to every roll&quot; option.">
       <created>1607946296243</created>
@@ -127,7 +126,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608756827761</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Minor changes.">
+      <created>1608757229337</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1608757229337</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -154,6 +160,7 @@
     <MESSAGE value="Removes the propriatory evaluation in favour of an open-source one." />
     <MESSAGE value="Trying to add an icon" />
     <MESSAGE value="Adds string evaluation to most parameters." />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds string evaluation to most parameters." />
+    <MESSAGE value="Minor changes." />
+    <option name="LAST_COMMIT_MESSAGE" value="Minor changes." />
   </component>
 </project>

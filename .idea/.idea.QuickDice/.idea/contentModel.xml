@@ -28,6 +28,7 @@
       </e>
       <e p="QuickDice.csproj" t="IncludeRecursive" />
       <e p="QuickDice.sln" t="IncludeFlat" />
+      <e p="QuickDiceIcon.ico" t="Include" />
     </e>
   </component>
 </project>
