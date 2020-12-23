@@ -19,6 +19,7 @@ namespace QuickDice.Dice
         protected const string LESS_THAN_RIGHT = "<=";
         protected const string EQUALS_WRONG = "=";
         protected const string EQUALS_RIGHT = "==";
+        protected readonly string[] COMPARATORS = new[] {GREATER_THAN_RIGHT, LESS_THAN_RIGHT, EQUALS_RIGHT};
 
         public const string TOTAL = "total";
         public const string INDIVIDUAL = "individual";
@@ -55,7 +56,19 @@ namespace QuickDice.Dice
                 successString = args.First(arg => arg.StartsWith(SUCCESS, StringComparison.OrdinalIgnoreCase))
                     .Substring(SUCCESS.Length)
                     .Trim();
+
+                if (successString.Length == 0)
+                {
+                    finalResults.Add("No Success parameters present.");
+                    success = false;
+                }
+                
                 successString = this.ReplaceProblems(successString);
+                if(this.COMPARATORS.All(comp => successString.Contains(comp) == false))
+                {
+                    finalResults.Add("Success parameters does not include comparator. Inserting default.");
+                    successString = successString.Insert(0, GREATER_THAN_RIGHT);
+                }
             }
             
             bool countsTwo = args.Any(arg => arg.StartsWith(COUNTS_TWO, StringComparison.OrdinalIgnoreCase));
@@ -65,6 +78,11 @@ namespace QuickDice.Dice
                     .Substring(COUNTS_TWO.Length)
                     .Trim();
                 countsTwoString = this.ReplaceProblems(countsTwoString);
+                if (this.COMPARATORS.All(comp => countsTwoString.Contains(comp) == false))
+                {
+                    finalResults.Add("Counts for Two parameters does not include comparator. Inserting default.");
+                    countsTwoString = countsTwoString.Insert(0, GREATER_THAN_RIGHT);
+                }
             }
             
             bool subtracts = args.Any(arg => arg.StartsWith(SUBTRACTS, StringComparison.OrdinalIgnoreCase));
@@ -74,6 +92,11 @@ namespace QuickDice.Dice
                         .Substring(SUBTRACTS.Length)
                         .Trim();
                 subtractsString = this.ReplaceProblems(subtractsString);
+                if (this.COMPARATORS.All(comp => subtractsString.Contains(comp) == false))
+                {
+                    finalResults.Add("Subtracts Successes parameters does not include comparator. Inserting default.");
+                    subtractsString = subtractsString.Insert(0, LESS_THAN_RIGHT);
+                }
             }
             
             bool useExplosive = args.Any(arg => arg.StartsWith(EXPLOSIVE, StringComparison.OrdinalIgnoreCase));
@@ -83,6 +106,11 @@ namespace QuickDice.Dice
                     .Substring(EXPLOSIVE.Length)
                     .Trim();
                 explosiveString = this.ReplaceProblems(explosiveString);
+                if (this.COMPARATORS.All(comp => explosiveString.Contains(comp) == false))
+                {
+                    finalResults.Add("Explosive parameters does not include comparator. Inserting default.");
+                    explosiveString = explosiveString.Insert(0, GREATER_THAN_RIGHT);
+                }
             }
 
             bool addToAll = args.Any(arg => arg.StartsWith(ADD_TO_ALL, StringComparison.OrdinalIgnoreCase));
