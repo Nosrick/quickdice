@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:QuickDice"
         mc:Ignorable="d"
-        Title="QuickDice" ResizeMode="CanMinimize" Name="QuickDiceWindow" Height="350" Width="320" Icon="QuickDice.ico">
+        Title="QuickDice" ResizeMode="CanMinimize" Name="QuickDiceWindow" Height="390" Width="320">
     <Grid>
         <DockPanel>
             <StackPanel>

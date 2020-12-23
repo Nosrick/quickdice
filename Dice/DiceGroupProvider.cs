@@ -10,9 +10,15 @@ namespace QuickDice.Dice
 {
     public class DiceGroupProvider
     {
-        protected readonly string Regex = @"\d+[dD]\d+|[dD]\d+|\d+|[+-/*^]";
+        protected const string REGEX = @"\d+[dD]\d+|[dD]\d+|\d+|[\+\-\/\*\^]";
         protected readonly char[] D = new[] {'d', 'D'};
-        protected readonly char Comma = ',';
+        protected const char COMMA = ',';
+        protected const string GREATER_THAN_WRONG = "=>";
+        protected const string GREATER_THAN_RIGHT = ">=";
+        protected const string LESS_THAN_WRONG = "=<";
+        protected const string LESS_THAN_RIGHT = "<=";
+        protected const string EQUALS_WRONG = "=";
+        protected const string EQUALS_RIGHT = "==";
 
         public const string TOTAL = "total";
         public const string INDIVIDUAL = "individual";
@@ -35,76 +41,59 @@ namespace QuickDice.Dice
         {
             string original = diceString.Replace(" ", "");
             string workingCopy = original;
-            string[] splits = workingCopy.Split(this.Comma);
+            string[] splits = workingCopy.Split(COMMA);
 
             List<string> finalResults = new List<string>();
 
             bool total = args.Any(arg => arg.StartsWith(TOTAL, StringComparison.OrdinalIgnoreCase));
+            
+            string successString = "", countsTwoString = "", subtractsString = "", explosiveString = "";
+            
+            bool success = args.Any(arg => arg.StartsWith(SUCCESS, StringComparison.OrdinalIgnoreCase));
+            if (success)
+            {
+                successString = args.First(arg => arg.StartsWith(SUCCESS, StringComparison.OrdinalIgnoreCase))
+                    .Substring(SUCCESS.Length)
+                    .Trim();
+                successString = this.ReplaceProblems(successString);
+            }
+            
             bool countsTwo = args.Any(arg => arg.StartsWith(COUNTS_TWO, StringComparison.OrdinalIgnoreCase));
-            int countsTwoRange = 0;
             if (countsTwo)
             {
-                if (int.TryParse(
-                    args.First(arg => arg.StartsWith(COUNTS_TWO, StringComparison.OrdinalIgnoreCase))
-                        .Substring(COUNTS_TWO.Length)
-                        .Trim(),
-                    out countsTwoRange) == false)
-                {
-                    MessageBox.Show("Please input a valid range for the 'Counts For Two' parameter.");
-                    return finalResults;
-                }
+                countsTwoString = args.First(arg => arg.StartsWith(COUNTS_TWO, StringComparison.OrdinalIgnoreCase))
+                    .Substring(COUNTS_TWO.Length)
+                    .Trim();
+                countsTwoString = this.ReplaceProblems(countsTwoString);
             }
+            
             bool subtracts = args.Any(arg => arg.StartsWith(SUBTRACTS, StringComparison.OrdinalIgnoreCase));
-            int subtractsRange = 0;
             if (subtracts)
             {
-                if (int.TryParse(
-                    args.First(arg => arg.StartsWith(SUBTRACTS, StringComparison.OrdinalIgnoreCase))
+                subtractsString = args.First(arg => arg.StartsWith(SUBTRACTS, StringComparison.OrdinalIgnoreCase))
                         .Substring(SUBTRACTS.Length)
-                        .Trim(),
-                    out subtractsRange) == false)
-                {
-                    MessageBox.Show("Please input a valid range for the 'Subtracts' parameter.");
-                    return finalResults;
-                }
+                        .Trim();
+                subtractsString = this.ReplaceProblems(subtractsString);
             }
             
             bool useExplosive = args.Any(arg => arg.StartsWith(EXPLOSIVE, StringComparison.OrdinalIgnoreCase));
-            int explosiveRange = 0;
             if (useExplosive)
             {
-                if (int.TryParse(
-                    args.First(arg => arg.StartsWith(EXPLOSIVE, StringComparison.OrdinalIgnoreCase))
-                        .Substring(EXPLOSIVE.Length)
-                        .Trim(),
-                    out explosiveRange) == false)
-                {
-                    MessageBox.Show("Please input a valid range for the 'Explodes' parameter.");
-                    return finalResults;
-                }
+                explosiveString = args.First(arg => arg.StartsWith(EXPLOSIVE, StringComparison.OrdinalIgnoreCase))
+                    .Substring(EXPLOSIVE.Length)
+                    .Trim();
+                explosiveString = this.ReplaceProblems(explosiveString);
             }
 
             bool addToAll = args.Any(arg => arg.StartsWith(ADD_TO_ALL, StringComparison.OrdinalIgnoreCase));
 
-            Tuple<bool, int>[] tupleArgs = new[]
+            Tuple<bool, string>[] tupleArgs = new[]
             {
-                new Tuple<bool, int>(countsTwo, countsTwoRange), 
-                new Tuple<bool, int>(subtracts, subtractsRange),
-                new Tuple<bool, int>(useExplosive, explosiveRange)
+                new Tuple<bool, string>(success, successString),
+                new Tuple<bool, string>(countsTwo, countsTwoString), 
+                new Tuple<bool, string>(subtracts, subtractsString),
+                new Tuple<bool, string>(useExplosive, explosiveString)
             };
-
-            int successThreshold = int.MinValue;
-
-            if (args.Any(arg => arg.StartsWith(SUCCESS, StringComparison.OrdinalIgnoreCase)))
-            {
-                string successString = args.First(arg => arg.StartsWith(SUCCESS))
-                    .Substring(SUCCESS.Length)
-                    .Trim();
-                if (successString.Length > 0)
-                {
-                    successThreshold = int.Parse(successString);
-                }
-            }
 
             foreach (string split in splits)
             {
@@ -113,7 +102,7 @@ namespace QuickDice.Dice
                 List<int> firstGroup = new List<int>();
                 List<int> results = new List<int>();
                 List<string> resultStrings = new List<string>();
-                MatchCollection group = System.Text.RegularExpressions.Regex.Matches(splitCopy, this.Regex);
+                MatchCollection group = System.Text.RegularExpressions.Regex.Matches(splitCopy, REGEX);
                 for(int i = 0; i < group.Count; i++)
                 {
                     string temp = group[i].Value;
@@ -137,7 +126,7 @@ namespace QuickDice.Dice
                         {
                             IEnumerable<int> moreResults = new List<int>();
                             int moreSuccesses = 0;
-                            (moreResults, moreSuccesses) = this.Roll(faces, successThreshold, tupleArgs);
+                            (moreResults, moreSuccesses) = this.Roll(faces, tupleArgs);
                             localResults.AddRange(moreResults);
                             if (!addToAll)
                             {
@@ -198,7 +187,7 @@ namespace QuickDice.Dice
                             {
                                 for (int l = 0; l < firstGroup.Count; l++)
                                 {
-                                    firstGroup[l] = Eval.Evaluate<int>(firstGroup[l] + group[i - 1].Value + result);
+                                    firstGroup[l] = this.Eval.Evaluate<int>(firstGroup[l] + group[i - 1].Value + result);
                                 }
                             }
 
@@ -227,23 +216,23 @@ namespace QuickDice.Dice
                     resultStrings.AddRange(firstGroup.Select(result => result.ToString()));
                 }
 
-                if (successThreshold != int.MinValue)
+                if (success)
                 {
                     if (total)
                     {
                         successes = 0;
-                        if (results.Sum() >= successThreshold)
+                        int sum = this.Eval.Evaluate<int>(splitCopy);
+                        if (this.Eval.Evaluate<bool>(sum + successString))
                         {
                             successes = 1;
                         }
                     }
-
-                    if (addToAll)
+                    else if (addToAll)
                     {
                         successes = 0;
                         foreach (int result in firstGroup)
                         {
-                            if (result >= successThreshold)
+                            if (this.Eval.Evaluate<bool>(result + successString))
                             {
                                 successes += 1;
                             }
@@ -253,7 +242,7 @@ namespace QuickDice.Dice
                     resultStrings.Add("Successes: " + successes);
                 }
                 
-                resultStrings.Add("Total: " + Eval.Evaluate<int>(splitCopy).ToString());
+                resultStrings.Add("Total: " + this.Eval.Evaluate<int>(splitCopy).ToString());
                 finalResults.AddRange(resultStrings);
             }
 
@@ -265,7 +254,7 @@ namespace QuickDice.Dice
             return data.IndexOfAny(this.D) >= 0;
         }
 
-        protected (IEnumerable<int>, int) Roll(int upper, int successThreshold = int.MinValue, params Tuple<bool, int>[] args)
+        protected (IEnumerable<int>, int) Roll(int upper, params Tuple<bool, string>[] args)
         {
             byte[] bytes = new byte[4];
             this.Roller.GetBytes(bytes, 0, 4);
@@ -275,9 +264,9 @@ namespace QuickDice.Dice
 
             int successes = 0;
 
-            if (successThreshold != int.MinValue)
+            if (args[0].Item1)
             {
-                if (result >= successThreshold)
+                if (this.Eval.Evaluate<bool>(result + args[0].Item2))
                 {
                     successes += 1;
                 }
@@ -285,31 +274,31 @@ namespace QuickDice.Dice
                 if (args.Length > 0)
                 {
                     //counts for two
-                    if (args[0].Item1 == true)
+                    if (args[1].Item1 == true)
                     {
-                        if (result >= args[0].Item2)
+                        if(this.Eval.Evaluate<bool>(result + args[1].Item2))
                         {
                             successes += 1;
                         }
                     }
 
                     //subtracts
-                    if (args.Length > 1 && args[1].Item1 == true)
+                    if (args.Length > 1 && args[2].Item1 == true)
                     {
-                        if (result <= args[1].Item2)
+                        if (this.Eval.Evaluate<bool>(result + args[2].Item2))
                         {
                             successes -= 1;
                         }
                     }
 
                     //explode
-                    if (args.Length > 2 && args[2].Item1 == true)
+                    if (args.Length > 2 && args[3].Item1 == true)
                     {
-                        if (result >= args[2].Item2)
+                        if (this.Eval.Evaluate<bool>(result + args[3].Item2))
                         {
                             IEnumerable<int> moreResults = new List<int>();
                             int moreSuccesses = 0;
-                            (moreResults, moreSuccesses) = this.Roll(upper, successThreshold, args);
+                            (moreResults, moreSuccesses) = this.Roll(upper, args);
                             results.AddRange(moreResults);
                             successes += moreSuccesses;
                         }
@@ -318,6 +307,28 @@ namespace QuickDice.Dice
             }
 
             return (results, successes);
+        }
+
+        protected string ReplaceProblems(string formula)
+        {
+            string returnValue = formula;
+            if (returnValue.Contains(GREATER_THAN_WRONG))
+            {
+                returnValue = returnValue.Replace(GREATER_THAN_WRONG, GREATER_THAN_RIGHT);
+            }
+            else if (returnValue.Contains(LESS_THAN_WRONG))
+            {
+                returnValue = returnValue.Replace(LESS_THAN_WRONG, LESS_THAN_RIGHT);
+            }
+            else if (returnValue.Contains(EQUALS_WRONG) 
+                     && returnValue.Contains(EQUALS_RIGHT) == false
+                     && returnValue.Contains(GREATER_THAN_RIGHT) == false 
+                     && returnValue.Contains(LESS_THAN_RIGHT) == false)
+            {
+                returnValue = returnValue.Replace(EQUALS_WRONG, EQUALS_RIGHT);
+            }
+
+            return returnValue;
         }
     }
 }
