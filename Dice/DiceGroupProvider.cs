@@ -210,7 +210,8 @@ namespace QuickDice.Dice
                         firstGroup.AddRange(results);
                     }
                 }
-
+                
+                int sum = this.Eval.Evaluate<int>(splitCopy);
                 if (addToAll)
                 {
                     resultStrings.AddRange(firstGroup.Select(result => result.ToString()));
@@ -221,7 +222,7 @@ namespace QuickDice.Dice
                     if (total)
                     {
                         successes = 0;
-                        int sum = this.Eval.Evaluate<int>(splitCopy);
+                        
                         if (this.Eval.Evaluate<bool>(sum + successString))
                         {
                             successes = 1;
@@ -242,7 +243,7 @@ namespace QuickDice.Dice
                     resultStrings.Add("Successes: " + successes);
                 }
                 
-                resultStrings.Add("Total: " + this.Eval.Evaluate<int>(splitCopy).ToString());
+                resultStrings.Add("Total: " + sum);
                 finalResults.AddRange(resultStrings);
             }
 
