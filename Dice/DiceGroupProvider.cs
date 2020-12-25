@@ -13,6 +13,7 @@ namespace QuickDice.Dice
         protected const string REGEX = @"\d+[dD]\d+|[dD]\d+|\d+|[\+\-\/\*\^]";
         protected readonly char[] D = new[] {'d', 'D'};
         protected const char COMMA = ',';
+        protected const char RANGE_DELIMITER = '-';
         protected const string GREATER_THAN_WRONG = "=>";
         protected const string GREATER_THAN_RIGHT = ">=";
         protected const string LESS_THAN_WRONG = "=<";
@@ -64,7 +65,8 @@ namespace QuickDice.Dice
                 }
                 
                 successString = this.ReplaceProblems(successString);
-                if(this.COMPARATORS.All(comp => successString.Contains(comp) == false))
+                if(this.IsRange(successString) == false
+                    && this.COMPARATORS.All(comp => successString.Contains(comp) == false))
                 {
                     finalResults.Add("Success parameters does not include comparator. Inserting default.");
                     successString = successString.Insert(0, GREATER_THAN_RIGHT);
@@ -78,7 +80,8 @@ namespace QuickDice.Dice
                     .Substring(COUNTS_TWO.Length)
                     .Trim();
                 countsTwoString = this.ReplaceProblems(countsTwoString);
-                if (this.COMPARATORS.All(comp => countsTwoString.Contains(comp) == false))
+                if (this.IsRange(countsTwoString) == false 
+                    && this.COMPARATORS.All(comp => countsTwoString.Contains(comp) == false))
                 {
                     finalResults.Add("Counts for Two parameters does not include comparator. Inserting default.");
                     countsTwoString = countsTwoString.Insert(0, GREATER_THAN_RIGHT);
@@ -92,7 +95,8 @@ namespace QuickDice.Dice
                         .Substring(SUBTRACTS.Length)
                         .Trim();
                 subtractsString = this.ReplaceProblems(subtractsString);
-                if (this.COMPARATORS.All(comp => subtractsString.Contains(comp) == false))
+                if (this.IsRange(subtractsString) == false
+                    && this.COMPARATORS.All(comp => subtractsString.Contains(comp) == false))
                 {
                     finalResults.Add("Subtracts Successes parameters does not include comparator. Inserting default.");
                     subtractsString = subtractsString.Insert(0, LESS_THAN_RIGHT);
@@ -106,7 +110,8 @@ namespace QuickDice.Dice
                     .Substring(EXPLOSIVE.Length)
                     .Trim();
                 explosiveString = this.ReplaceProblems(explosiveString);
-                if (this.COMPARATORS.All(comp => explosiveString.Contains(comp) == false))
+                if (this.IsRange(explosiveString) == false 
+                    && this.COMPARATORS.All(comp => explosiveString.Contains(comp) == false))
                 {
                     finalResults.Add("Explosive parameters does not include comparator. Inserting default.");
                     explosiveString = explosiveString.Insert(0, GREATER_THAN_RIGHT);
@@ -215,7 +220,7 @@ namespace QuickDice.Dice
                             {
                                 for (int l = 0; l < firstGroup.Count; l++)
                                 {
-                                    firstGroup[l] = this.Eval.Evaluate<int>(firstGroup[l] + group[i - 1].Value + result);
+                                    firstGroup[l] = this.Evaluate<int>(firstGroup[l] + group[i - 1].Value + result);
                                 }
                             }
 
@@ -239,7 +244,7 @@ namespace QuickDice.Dice
                     }
                 }
                 
-                int sum = this.Eval.Evaluate<int>(splitCopy);
+                int sum = this.Evaluate<int>(splitCopy);
                 if (addToAll)
                 {
                     resultStrings.AddRange(firstGroup.Select(result => result.ToString()));
@@ -251,7 +256,7 @@ namespace QuickDice.Dice
                     {
                         successes = 0;
                         
-                        if (this.Eval.Evaluate<bool>(sum + successString))
+                        if (this.Evaluate<bool>(sum + successString))
                         {
                             successes = 1;
                         }
@@ -261,7 +266,7 @@ namespace QuickDice.Dice
                         successes = 0;
                         foreach (int result in firstGroup)
                         {
-                            if (this.Eval.Evaluate<bool>(result + successString))
+                            if (this.Evaluate<bool>(result + successString))
                             {
                                 successes += 1;
                             }
@@ -283,6 +288,25 @@ namespace QuickDice.Dice
             return data.IndexOfAny(this.D) >= 0;
         }
 
+        protected bool IsRange(string range)
+        {
+            return range.Contains(RANGE_DELIMITER);
+        }
+
+        protected bool WithinRange(int value, string range)
+        {
+            string[] split = range.Split(RANGE_DELIMITER);
+            for (int i = 0; i < split.Length; i++)
+            {
+                split[i] = split[i].Trim();
+            }
+
+            int minimum = int.Parse(split[0]);
+            int maximum = int.Parse(split[1]);
+            
+            return (value - minimum) * (maximum - value) >= 0;
+        }
+
         protected (IEnumerable<int>, int) Roll(int upper, params Tuple<bool, string>[] args)
         {
             byte[] bytes = new byte[4];
@@ -293,9 +317,11 @@ namespace QuickDice.Dice
 
             int successes = 0;
 
+            //Successes
             if (args[0].Item1)
             {
-                if (this.Eval.Evaluate<bool>(result + args[0].Item2))
+                if ((this.IsRange(args[0].Item2) && this.WithinRange(result, args[0].Item2))
+                    || (this.IsRange(args[0].Item2) == false && this.Evaluate<bool>(result + args[0].Item2)))
                 {
                     successes += 1;
                 }
@@ -305,7 +331,8 @@ namespace QuickDice.Dice
                     //counts for two
                     if (args[1].Item1 == true)
                     {
-                        if(this.Eval.Evaluate<bool>(result + args[1].Item2))
+                        if ((this.IsRange(args[1].Item2) && this.WithinRange(result, args[1].Item2))
+                            || (this.IsRange(args[1].Item2) == false && this.Evaluate<bool>(result + args[1].Item2)))
                         {
                             successes += 1;
                         }
@@ -314,7 +341,8 @@ namespace QuickDice.Dice
                     //subtracts
                     if (args.Length > 1 && args[2].Item1 == true)
                     {
-                        if (this.Eval.Evaluate<bool>(result + args[2].Item2))
+                        if ((this.IsRange(args[2].Item2) && this.WithinRange(result, args[2].Item2))
+                            || (this.IsRange(args[2].Item2) == false && this.Evaluate<bool>(result + args[2].Item2)))
                         {
                             successes -= 1;
                         }
@@ -323,7 +351,8 @@ namespace QuickDice.Dice
                     //explode
                     if (args.Length > 2 && args[3].Item1 == true)
                     {
-                        if (this.Eval.Evaluate<bool>(result + args[3].Item2))
+                        if ((this.IsRange(args[3].Item2) && this.WithinRange(result, args[3].Item2))
+                            || (this.IsRange(args[3].Item2) == false && this.Evaluate<bool>(result + args[3].Item2)))
                         {
                             IEnumerable<int> moreResults = new List<int>();
                             int moreSuccesses = 0;
@@ -358,6 +387,19 @@ namespace QuickDice.Dice
             }
 
             return returnValue;
+        }
+
+        protected T Evaluate<T>(string value)
+        {
+            try
+            {
+                return this.Eval.Evaluate<T>(value);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Something went wrong evaluating a condition.");
+                return default;
+            }
         }
     }
 }
