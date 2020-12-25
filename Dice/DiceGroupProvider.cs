@@ -52,8 +52,7 @@ namespace QuickDice.Dice
 
         public IEnumerable<string> Parse(string diceString, string[] args)
         {
-            string original = diceString.Replace(" ", "");
-            string workingCopy = original;
+            string workingCopy = diceString;
             string[] splits = workingCopy.Split(COMMA);
 
             List<string> finalResults = new List<string>();
@@ -323,8 +322,18 @@ namespace QuickDice.Dice
                 split[i] = split[i].Trim();
             }
 
-            int minimum = int.Parse(split[0]);
-            int maximum = int.Parse(split[1]);
+            int minimum = 0, maximum = 0;
+            if (int.TryParse(split[0], out minimum) == false)
+            {
+                MessageBox.Show("Minimum range is not a valid number.");
+                return false;
+            }
+
+            if (int.TryParse(split[1], out maximum) == false)
+            {
+                MessageBox.Show("Maximum range is not a valid number.");
+                return false;
+            }
             
             return (value - minimum) * (maximum - value) >= 0;
         }

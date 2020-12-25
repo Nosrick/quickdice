@@ -38,6 +38,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/D6D3AC03-BF86-4882-89C2-EBF3A45CE0A1/fb/57fd3e3b/String.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/792D03D8-5C87-4C2C-8E29-CB3F208809AF/c0/0cfea92b/.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/nosri/Documents/Projects/QuickDice/Dice/DiceGroupProvider.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/nosri/Documents/Projects/QuickDice/Dice/DiceGroupProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/D6D3AC03-BF86-4882-89C2-EBF3A45CE0A1/1b/d8455b7f/AppDomain.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/../JoyUnity/Assets/Code/Rollers/RNG.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/D6D3AC03-BF86-4882-89C2-EBF3A45CE0A1/da/f61e9152/ThrowHelper.cs" root0="SKIP_HIGHLIGHTING" />
@@ -105,7 +106,7 @@
       <workItem from="1608765193420" duration="382000" />
       <workItem from="1608765601204" duration="52000" />
       <workItem from="1608814220111" duration="646000" />
-      <workItem from="1608905845284" duration="6526000" />
+      <workItem from="1608905845284" duration="7423000" />
     </task>
     <task id="LOCAL-00001" summary="First commit. Mostly working.&#10;Need to add the &quot;add bonus to every roll&quot; option.">
       <created>1607946296243</created>
@@ -177,7 +178,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608910651422</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Adds quick success processing to the main input box.">
+      <created>1608912985470</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1608912985470</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -209,6 +217,26 @@
     <MESSAGE value="Adds comparators." />
     <MESSAGE value="Changed the icon." />
     <MESSAGE value="Adds range processing." />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds range processing." />
+    <MESSAGE value="Adds quick success processing to the main input box." />
+    <option name="LAST_COMMIT_MESSAGE" value="Adds quick success processing to the main input box." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Dice/DiceGroupProvider.cs</url>
+          <line>168</line>
+          <properties documentPath="C:\Users\nosri\Documents\Projects\QuickDice\Dice\DiceGroupProvider.cs" initialLine="168" containingFunctionPresentation="method 'Parse'">
+            <startOffsets>
+              <option value="7817" />
+            </startOffsets>
+            <endOffsets>
+              <option value="7839" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
