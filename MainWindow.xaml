@@ -18,13 +18,13 @@
                     </StackPanel>
                 </DockPanel>
                 <StackPanel Margin="10 0 10 0">
+                    <StackPanel Name="SuccessType" Margin="0 0 10 2">
+                        <RadioButton Name="IndividualRadio" GroupName="DiceGrouping" Margin="0 2 0 0" IsChecked="True">Individual</RadioButton>
+                        <RadioButton Name="TotalRadio" GroupName="DiceGrouping" Margin="0 2 0 0">Total</RadioButton>
+                    </StackPanel>
                     <CheckBox Margin="0 0 0 2" Name="AddBonusIndividuallyCheckBox">Add Bonus to Each Roll</CheckBox>
                     <CheckBox Name="SuccessesCheckBox" IsChecked="False">Successes</CheckBox>
                     <StackPanel Name="SuccessPanel" Margin="5 2 0 2" Visibility="Collapsed">
-                        <StackPanel Name="SuccessType" Margin="10 0 10 10">
-                            <RadioButton Name="IndividualRadio" GroupName="DiceGrouping" Margin="0 2 0 0" IsChecked="True">Individual</RadioButton>
-                            <RadioButton Name="TotalRadio" GroupName="DiceGrouping" Margin="0 2 0 0">Total</RadioButton>
-                        </StackPanel>
                         <StackPanel>
                             <CheckBox Margin="0 0 0 2" Name="ExplosiveCheckBox">Explosive Range</CheckBox>
                             <TextBox Margin="10 2 0 2" Name="ExplosiveRangeText"></TextBox>

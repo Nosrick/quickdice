@@ -52,18 +52,18 @@ namespace QuickDice
             this.ResultsList.Items.Clear();
             
             List<string> options = new List<string>();
+            
+            if (this.IndividualRadio.IsChecked.Value)
+            {
+                options.Add(DiceGroupProvider.INDIVIDUAL);
+            }
+            else if (this.TotalRadio.IsChecked.Value)
+            {
+                options.Add(DiceGroupProvider.TOTAL);
+            }
 
             if (this.SuccessesCheckBox.IsChecked.Value)
             {
-                if (this.IndividualRadio.IsChecked.Value)
-                {
-                    options.Add(DiceGroupProvider.INDIVIDUAL);
-                }
-                else if (this.TotalRadio.IsChecked.Value)
-                {
-                    options.Add(DiceGroupProvider.TOTAL);
-                }
-
                 if (this.SuccessesCheckBox.IsChecked.Value)
                 {
                     options.Add(DiceGroupProvider.SUCCESS + this.SuccessParameters.Text);

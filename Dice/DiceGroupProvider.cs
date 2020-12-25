@@ -20,6 +20,7 @@ namespace QuickDice.Dice
         protected const string LESS_THAN_OR_EQUAL_RIGHT = "<=";
         protected const string EQUALS_WRONG = "=";
         protected const string EQUALS_RIGHT = "==";
+        protected const string IN_RANGE = ":";
         protected readonly string[] COMPARATORS = new[] {GREATER_THAN_OR_EQUAL_RIGHT, LESS_THAN_OR_EQUAL_RIGHT, EQUALS_RIGHT};
         protected readonly string[] ALL_COMPARATORS = new[]
         {
@@ -30,7 +31,8 @@ namespace QuickDice.Dice
             LESS_THAN_OR_EQUAL_WRONG,
             EQUALS_WRONG,
             "<",
-            ">"
+            ">",
+            ":"
         };
 
         public const string TOTAL = "total";
@@ -277,7 +279,8 @@ namespace QuickDice.Dice
                     {
                         successes = 0;
                         
-                        if (this.Evaluate<bool>(sum + successString))
+                        if ((this.IsRange(successString) && this.WithinRange(sum, successString))
+                            || (this.IsRange(successString) == false && this.Evaluate<bool>(sum + successString)))
                         {
                             successes = 1;
                         }
@@ -287,7 +290,8 @@ namespace QuickDice.Dice
                         successes = 0;
                         foreach (int result in firstGroup)
                         {
-                            if (this.Evaluate<bool>(result + successString))
+                            if ((this.IsRange(successString) && this.WithinRange(result, successString))
+                                || (this.IsRange(successString) == false && this.Evaluate<bool>(result + successString)))
                             {
                                 successes += 1;
                             }
@@ -415,6 +419,10 @@ namespace QuickDice.Dice
                      && returnValue.Contains(LESS_THAN_OR_EQUAL_RIGHT) == false)
             {
                 returnValue = returnValue.Replace(EQUALS_WRONG, EQUALS_RIGHT);
+            }
+            else if (returnValue.Contains(IN_RANGE))
+            {
+                returnValue = returnValue.Replace(IN_RANGE, "");
             }
 
             return returnValue;
