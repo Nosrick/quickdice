@@ -8,12 +8,7 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8892e85b-7201-44c9-be63-aa0691ecc672" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.QuickDice/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.QuickDice/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dice/DiceGroupProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Dice/DiceGroupProvider.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainWindow.xaml" beforeDir="false" afterPath="$PROJECT_DIR$/MainWindow.xaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/MainWindow.xaml.cs" afterDir="false" />
-    </list>
+    <list default="true" id="8892e85b-7201-44c9-be63-aa0691ecc672" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -38,6 +33,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/636F320D-DFF6-4B39-A563-6C3FD44C2E43/52/d102ae0e/ExpressionEvaluator.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/nosri/Documents/Projects/QuickDice/Dice/DiceGroupProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/D6D3AC03-BF86-4882-89C2-EBF3A45CE0A1/77/c0e8e278/Number.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock://C:/Users/nosri/Documents/Projects/QuickDice/Dice/DiceGroupProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/D6D3AC03-BF86-4882-89C2-EBF3A45CE0A1/fb/57fd3e3b/String.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/792D03D8-5C87-4C2C-8E29-CB3F208809AF/c0/0cfea92b/.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock://C:/Users/nosri/Documents/Projects/QuickDice/Dice/DiceGroupProvider.cs" root0="SKIP_HIGHLIGHTING" />
@@ -50,9 +46,9 @@
   </component>
   <component name="IdeDocumentHistory">
     <changedPaths>
-      <option value="$PROJECT_DIR$/Dice/DiceGroupProvider.cs" />
       <option value="$PROJECT_DIR$/MainWindow.xaml" />
       <option value="$PROJECT_DIR$/MainWindow.xaml.cs" />
+      <option value="$PROJECT_DIR$/Dice/DiceGroupProvider.cs" />
     </changedPaths>
   </component>
   <component name="ProjectId" id="1kyx57yqMnfRgJElsGAvWeKXtUb" />
@@ -110,7 +106,7 @@
       <workItem from="1608765193420" duration="382000" />
       <workItem from="1608765601204" duration="52000" />
       <workItem from="1608814220111" duration="646000" />
-      <workItem from="1608905845284" duration="11027000" />
+      <workItem from="1608905845284" duration="11425000" />
     </task>
     <task id="LOCAL-00001" summary="First commit. Mostly working.&#10;Need to add the &quot;add bonus to every roll&quot; option.">
       <created>1607946296243</created>
@@ -203,7 +199,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608916621867</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Adds original roll display.">
+      <created>1608918170702</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1608918170702</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,7 +241,8 @@
     <MESSAGE value="Adds quick success processing to the main input box." />
     <MESSAGE value="Fixes a crash." />
     <MESSAGE value="Adds range processor to dice string box." />
-    <option name="LAST_COMMIT_MESSAGE" value="Adds range processor to dice string box." />
+    <MESSAGE value="Adds original roll display." />
+    <option name="LAST_COMMIT_MESSAGE" value="Adds original roll display." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -248,26 +252,13 @@
           <line>445</line>
           <properties documentPath="C:\Users\nosri\Documents\Projects\QuickDice\Dice\DiceGroupProvider.cs" initialLine="436" containingFunctionPresentation="method 'Evaluate'">
             <startOffsets>
-              <option value="18817" />
+              <option value="18820" />
             </startOffsets>
             <endOffsets>
-              <option value="18881" />
+              <option value="18884" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Dice/DiceGroupProvider.cs</url>
-          <line>311</line>
-          <properties documentPath="C:\Users\nosri\Documents\Projects\QuickDice\Dice\DiceGroupProvider.cs" initialLine="307" containingFunctionPresentation="method 'Parse'">
-            <startOffsets>
-              <option value="13893" />
-            </startOffsets>
-            <endOffsets>
-              <option value="13930" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
