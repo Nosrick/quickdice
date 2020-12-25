@@ -9,7 +9,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8892e85b-7201-44c9-be63-aa0691ecc672" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.QuickDice/.idea/contentModel.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.QuickDice/.idea/contentModel.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.QuickDice/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.QuickDice/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Dice/DiceGroupProvider.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Dice/DiceGroupProvider.cs" afterDir="false" />
     </list>
@@ -106,7 +105,7 @@
       <workItem from="1608765193420" duration="382000" />
       <workItem from="1608765601204" duration="52000" />
       <workItem from="1608814220111" duration="646000" />
-      <workItem from="1608905845284" duration="4515000" />
+      <workItem from="1608905845284" duration="6526000" />
     </task>
     <task id="LOCAL-00001" summary="First commit. Mostly working.&#10;Need to add the &quot;add bonus to every roll&quot; option.">
       <created>1607946296243</created>
@@ -171,7 +170,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608765143263</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Adds range processing.">
+      <created>1608910651422</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1608910651422</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -202,6 +208,7 @@
     <MESSAGE value="Adds the icon to the window." />
     <MESSAGE value="Adds comparators." />
     <MESSAGE value="Changed the icon." />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed the icon." />
+    <MESSAGE value="Adds range processing." />
+    <option name="LAST_COMMIT_MESSAGE" value="Adds range processing." />
   </component>
 </project>

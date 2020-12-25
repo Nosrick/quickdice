@@ -14,13 +14,24 @@ namespace QuickDice.Dice
         protected readonly char[] D = new[] {'d', 'D'};
         protected const char COMMA = ',';
         protected const char RANGE_DELIMITER = '-';
-        protected const string GREATER_THAN_WRONG = "=>";
-        protected const string GREATER_THAN_RIGHT = ">=";
-        protected const string LESS_THAN_WRONG = "=<";
-        protected const string LESS_THAN_RIGHT = "<=";
+        protected const string GREATER_THAN_OR_EQUAL_WRONG = "=>";
+        protected const string GREATER_THAN_OR_EQUAL_RIGHT = ">=";
+        protected const string LESS_THAN_OR_EQUAL_WRONG = "=<";
+        protected const string LESS_THAN_OR_EQUAL_RIGHT = "<=";
         protected const string EQUALS_WRONG = "=";
         protected const string EQUALS_RIGHT = "==";
-        protected readonly string[] COMPARATORS = new[] {GREATER_THAN_RIGHT, LESS_THAN_RIGHT, EQUALS_RIGHT};
+        protected readonly string[] COMPARATORS = new[] {GREATER_THAN_OR_EQUAL_RIGHT, LESS_THAN_OR_EQUAL_RIGHT, EQUALS_RIGHT};
+        protected readonly string[] ALL_COMPARATORS = new[]
+        {
+            GREATER_THAN_OR_EQUAL_RIGHT, 
+            LESS_THAN_OR_EQUAL_RIGHT, 
+            EQUALS_RIGHT,
+            GREATER_THAN_OR_EQUAL_WRONG,
+            LESS_THAN_OR_EQUAL_WRONG,
+            EQUALS_WRONG,
+            "<",
+            ">"
+        };
 
         public const string TOTAL = "total";
         public const string INDIVIDUAL = "individual";
@@ -69,7 +80,7 @@ namespace QuickDice.Dice
                     && this.COMPARATORS.All(comp => successString.Contains(comp) == false))
                 {
                     finalResults.Add("Success parameters does not include comparator. Inserting default.");
-                    successString = successString.Insert(0, GREATER_THAN_RIGHT);
+                    successString = successString.Insert(0, GREATER_THAN_OR_EQUAL_RIGHT);
                 }
             }
             
@@ -84,7 +95,7 @@ namespace QuickDice.Dice
                     && this.COMPARATORS.All(comp => countsTwoString.Contains(comp) == false))
                 {
                     finalResults.Add("Counts for Two parameters does not include comparator. Inserting default.");
-                    countsTwoString = countsTwoString.Insert(0, GREATER_THAN_RIGHT);
+                    countsTwoString = countsTwoString.Insert(0, GREATER_THAN_OR_EQUAL_RIGHT);
                 }
             }
             
@@ -99,7 +110,7 @@ namespace QuickDice.Dice
                     && this.COMPARATORS.All(comp => subtractsString.Contains(comp) == false))
                 {
                     finalResults.Add("Subtracts Successes parameters does not include comparator. Inserting default.");
-                    subtractsString = subtractsString.Insert(0, LESS_THAN_RIGHT);
+                    subtractsString = subtractsString.Insert(0, LESS_THAN_OR_EQUAL_RIGHT);
                 }
             }
             
@@ -114,7 +125,7 @@ namespace QuickDice.Dice
                     && this.COMPARATORS.All(comp => explosiveString.Contains(comp) == false))
                 {
                     finalResults.Add("Explosive parameters does not include comparator. Inserting default.");
-                    explosiveString = explosiveString.Insert(0, GREATER_THAN_RIGHT);
+                    explosiveString = explosiveString.Insert(0, GREATER_THAN_OR_EQUAL_RIGHT);
                 }
             }
 
@@ -132,6 +143,17 @@ namespace QuickDice.Dice
             {
                 int successes = 0;
                 string splitCopy = split;
+                if (this.ALL_COMPARATORS.Any(comp => splitCopy.Contains(comp)))
+                {
+                    string comparator = this.ALL_COMPARATORS.First(comp => splitCopy.Contains(comp));
+                    success = true;
+                    int index = splitCopy.IndexOf(comparator);
+                    successString = splitCopy.Substring(index);
+                    successString = this.ReplaceProblems(successString);
+                    tupleArgs[0] = new Tuple<bool, string>(success, successString);
+                    splitCopy = splitCopy.Remove(index);
+                }
+
                 List<int> firstGroup = new List<int>();
                 List<int> results = new List<int>();
                 List<string> resultStrings = new List<string>();
@@ -370,18 +392,18 @@ namespace QuickDice.Dice
         protected string ReplaceProblems(string formula)
         {
             string returnValue = formula;
-            if (returnValue.Contains(GREATER_THAN_WRONG))
+            if (returnValue.Contains(GREATER_THAN_OR_EQUAL_WRONG))
             {
-                returnValue = returnValue.Replace(GREATER_THAN_WRONG, GREATER_THAN_RIGHT);
+                returnValue = returnValue.Replace(GREATER_THAN_OR_EQUAL_WRONG, GREATER_THAN_OR_EQUAL_RIGHT);
             }
-            else if (returnValue.Contains(LESS_THAN_WRONG))
+            else if (returnValue.Contains(LESS_THAN_OR_EQUAL_WRONG))
             {
-                returnValue = returnValue.Replace(LESS_THAN_WRONG, LESS_THAN_RIGHT);
+                returnValue = returnValue.Replace(LESS_THAN_OR_EQUAL_WRONG, LESS_THAN_OR_EQUAL_RIGHT);
             }
             else if (returnValue.Contains(EQUALS_WRONG) 
                      && returnValue.Contains(EQUALS_RIGHT) == false
-                     && returnValue.Contains(GREATER_THAN_RIGHT) == false 
-                     && returnValue.Contains(LESS_THAN_RIGHT) == false)
+                     && returnValue.Contains(GREATER_THAN_OR_EQUAL_RIGHT) == false 
+                     && returnValue.Contains(LESS_THAN_OR_EQUAL_RIGHT) == false)
             {
                 returnValue = returnValue.Replace(EQUALS_WRONG, EQUALS_RIGHT);
             }
