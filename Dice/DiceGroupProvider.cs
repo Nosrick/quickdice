@@ -42,6 +42,7 @@ namespace QuickDice.Dice
         public const string SUBTRACTS = "subtracts";
         public const string EXPLOSIVE = "explosive";
         public const string ADD_TO_ALL = "addtoall";
+        public const string DISPLAY_ORIGINAL = "original";
 
         protected RNGCryptoServiceProvider Roller;
         protected ExpressionEvaluator Eval;
@@ -131,6 +132,8 @@ namespace QuickDice.Dice
             }
 
             bool addToAll = args.Any(arg => arg.StartsWith(ADD_TO_ALL, StringComparison.OrdinalIgnoreCase));
+
+            bool original = args.Any(arg => arg.StartsWith(DISPLAY_ORIGINAL, StringComparison.OrdinalIgnoreCase));
 
             Tuple<bool, string>[] tupleArgs = new[]
             {
@@ -270,7 +273,11 @@ namespace QuickDice.Dice
                 int sum = this.Evaluate<int>(splitCopy);
                 if (addToAll)
                 {
-                    resultStrings.AddRange(firstGroup.Select(result => result.ToString()));
+                    for (int i = 0; i < firstGroup.Count; i++)
+                    {
+                        string add = original ? firstGroup[i] + " (" + results[i] + ")" : firstGroup[i].ToString();
+                        resultStrings.Add(add);
+                    }
                 }
 
                 if (success)

@@ -21,9 +21,11 @@ namespace QuickDice
             RollButton.Click += Roll;
             SuccessesCheckBox.Checked += SuccessesCheckBoxChanged;
             SuccessesCheckBox.Unchecked += SuccessesCheckBoxChanged;
+            this.AddBonusIndividuallyCheckBox.Checked += this.AddBonusIndividuallyChanged;
+            this.AddBonusIndividuallyCheckBox.Unchecked += this.AddBonusIndividuallyChanged;
             DiceBox.MouseDoubleClick += this.TextBoxClicked;
             SuccessParameters.MouseDoubleClick += this.TextBoxClicked;
-            
+
             DiceGroupProvider = new DiceGroupProvider();
         }
 
@@ -47,6 +49,18 @@ namespace QuickDice
             }
         }
 
+        protected void AddBonusIndividuallyChanged(object sender, RoutedEventArgs args)
+        {
+            if (this.AddBonusIndividuallyCheckBox.IsChecked.Value)
+            {
+                this.DisplayOriginalCheckBox.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.DisplayOriginalCheckBox.Visibility = Visibility.Collapsed;
+            }
+        }
+
         protected void Roll(object sender, RoutedEventArgs args)
         {
             this.ResultsList.Items.Clear();
@@ -60,6 +74,11 @@ namespace QuickDice
             else if (this.TotalRadio.IsChecked.Value)
             {
                 options.Add(DiceGroupProvider.TOTAL);
+            }
+
+            if (this.DisplayOriginalCheckBox.IsChecked.Value)
+            {
+                options.Add(DiceGroupProvider.DISPLAY_ORIGINAL);
             }
 
             if (this.SuccessesCheckBox.IsChecked.Value)

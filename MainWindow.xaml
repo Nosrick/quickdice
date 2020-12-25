@@ -23,6 +23,7 @@
                         <RadioButton Name="TotalRadio" GroupName="DiceGrouping" Margin="0 2 0 0">Total</RadioButton>
                     </StackPanel>
                     <CheckBox Margin="0 0 0 2" Name="AddBonusIndividuallyCheckBox">Add Bonus to Each Roll</CheckBox>
+                    <CheckBox Margin="0 0 0 2" Name="DisplayOriginalCheckBox" Visibility="Collapsed">Display Original Roll</CheckBox>
                     <CheckBox Name="SuccessesCheckBox" IsChecked="False">Successes</CheckBox>
                     <StackPanel Name="SuccessPanel" Margin="5 2 0 2" Visibility="Collapsed">
                         <StackPanel>
