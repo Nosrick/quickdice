@@ -79,7 +79,7 @@ namespace QuickDice.Dice
                 
                 successString = this.ReplaceProblems(successString);
                 if(this.IsRange(successString) == false
-                    && this.COMPARATORS.All(comp => successString.Contains(comp) == false))
+                    && this.ALL_COMPARATORS.All(comp => successString.Contains(comp) == false))
                 {
                     finalResults.Add("Success parameters does not include comparator. Inserting default.");
                     successString = successString.Insert(0, GREATER_THAN_OR_EQUAL_RIGHT);
@@ -94,7 +94,7 @@ namespace QuickDice.Dice
                     .Trim();
                 countsTwoString = this.ReplaceProblems(countsTwoString);
                 if (this.IsRange(countsTwoString) == false 
-                    && this.COMPARATORS.All(comp => countsTwoString.Contains(comp) == false))
+                    && this.ALL_COMPARATORS.All(comp => countsTwoString.Contains(comp) == false))
                 {
                     finalResults.Add("Counts for Two parameters does not include comparator. Inserting default.");
                     countsTwoString = countsTwoString.Insert(0, GREATER_THAN_OR_EQUAL_RIGHT);
@@ -109,7 +109,7 @@ namespace QuickDice.Dice
                         .Trim();
                 subtractsString = this.ReplaceProblems(subtractsString);
                 if (this.IsRange(subtractsString) == false
-                    && this.COMPARATORS.All(comp => subtractsString.Contains(comp) == false))
+                    && this.ALL_COMPARATORS.All(comp => subtractsString.Contains(comp) == false))
                 {
                     finalResults.Add("Subtracts Successes parameters does not include comparator. Inserting default.");
                     subtractsString = subtractsString.Insert(0, LESS_THAN_OR_EQUAL_RIGHT);
@@ -124,7 +124,7 @@ namespace QuickDice.Dice
                     .Trim();
                 explosiveString = this.ReplaceProblems(explosiveString);
                 if (this.IsRange(explosiveString) == false 
-                    && this.COMPARATORS.All(comp => explosiveString.Contains(comp) == false))
+                    && this.ALL_COMPARATORS.All(comp => explosiveString.Contains(comp) == false))
                 {
                     finalResults.Add("Explosive parameters does not include comparator. Inserting default.");
                     explosiveString = explosiveString.Insert(0, GREATER_THAN_OR_EQUAL_RIGHT);
